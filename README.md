@@ -5,7 +5,7 @@ The module provides middleware and API to store request context information.
 It should not be used by any module directly, i.e. should not be defined as a direct dependeciy by any module, but as a peerDependencies. This is to prevent conflicts that may arise from using multiple versions of this module.
 Every app should include it as a direct depdency.
 
-NOTE: if you want to use module, please use it in peerDependencies section, not dependencies.
+NOTE: if you want to use the module in some other module, please use it in peerDependencies section, not dependencies.
 
 ## Install
 
