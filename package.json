@@ -1,0 +1,33 @@
+{
+  "name": "request-local",
+  "version": "0.1.0",
+  "description": "Request locale storage for storing request context information",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node_modules/.bin/mocha test/ --ignore-leaks"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.paypal.com/nodejs/local-storage.git"
+  },
+  "keywords": [
+    "cls",
+    "local",
+    "storage"
+  ],
+  "dependencies": {
+    "continuation-local-storage": "~3.0.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.11.0",
+    "jshint": "~2.1.4",
+    "express": "~3.1.1",
+    "request": "~2.34.0",
+    "should": "~3.1.3"
+  },  
+  "author": "Dmytro Semenov <dsemenov@ebay.com>",
+  "license": "Apache License v2.0"
+}
