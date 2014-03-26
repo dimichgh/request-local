@@ -38,7 +38,7 @@ Set/getting attribute:
 require('request-local').data.foo = 'bar';
 
 // setting using custom namespace
-require('request-local').namespace('MyNamespace’).data.foo = 'bar';
+require('request-local').namespace('MyNamespace').data.foo = 'bar';
 
 // setting using custom namespace, shorter version
 require('request-local').namespace('MyNamespace').foo = 'bar';
@@ -47,8 +47,8 @@ require('request-local').namespace('MyNamespace').foo = 'bar';
 console.log(require('request-local').data.foo);
 
 // getting from custom namespace
-console.log(require('request-local').namespace('MyNamespace’).data.foo);
+console.log(require('request-local').namespace('MyNamespace').data.foo);
 
 // getting from custom namespace, shorter version
-console.log(require('request-local').namespace('MyNamespace’).foo);
+console.log(require('request-local').namespace('MyNamespace').foo);
 ```
