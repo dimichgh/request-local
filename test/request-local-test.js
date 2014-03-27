@@ -2,6 +2,7 @@ var express = require('express');
 var request = require('request');
 var should = require('should');
 var local = require('../');
+var create = require('../middleware').create;
 var mock = require('./mock');
 
 describe('request-local, negative', function() {
@@ -19,7 +20,7 @@ describe('request-local', function() {
 
 	var server;
 	var app = express();
-	app.use(local.create());
+	app.use(create());
 	// setting default context 
 	app.use(function(req, res, next) {
 		local.data.An = 'a';
@@ -124,9 +125,9 @@ describe('request-local', function() {
 			if (counter === 3)
 				done();
 		}
-		local.create()(mock.request('url1'), mock.response(), function() {
+		create()(mock.request('url1'), mock.response(), function() {
 
-			local.create()(mock.request('url2'), mock.response(), function() {
+			create()(mock.request('url2'), mock.response(), function() {
 				setTimeout(function() {
 					var req = local.data.request;
 					req.url.should.equal('url2');
@@ -140,7 +141,7 @@ describe('request-local', function() {
 				end();
 			}, 1000);
 
-			local.create()(mock.request('url3'), mock.response(), function() {
+			create()(mock.request('url3'), mock.response(), function() {
 				setTimeout(function() {
 					var req = local.data.request;
 					req.url.should.equal('url3');

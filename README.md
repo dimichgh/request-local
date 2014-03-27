@@ -1,6 +1,6 @@
 request-local
 =====
-The module provides middleware and API to store request context information.
+The module provides middleware and API to store request context data.
 
 It should not be used by any module directly, i.e. should not be defined as a direct dependeciy by any module, but as a peerDependencies. This is to prevent conflicts that may arise from using multiple versions of this module.
 Every app should include it as a direct depdency.
@@ -29,7 +29,7 @@ App package.json:
 
 Middlware:
 ```javascript
-app.use(require('request-local').create());
+app.use(require('request-local/middleware').create());
 ```
 
 Set/getting attribute:

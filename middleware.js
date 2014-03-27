@@ -13,4 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module.exports = require('./lib/request-local');
+module.exports.create = function() {
+	return require('./lib/request-local').create;
+};
