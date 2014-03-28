@@ -74,9 +74,9 @@ localOther.run(function(err, ctx) {
 	...
 });
 
-// bind request and response objects to request local context
+// bind request and response or any other event emitting objects to request local context
 var requestLocal = require('request-local').create('MyRequestLocalOther');
-requestLocal.run(req, res, function(err, ctx) {
+requestLocal.run(req, res, new require('events').EventEmitter(), function(err, ctx) {
 	...
 });
 ```
