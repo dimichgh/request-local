@@ -52,7 +52,7 @@ console.log(require('request-local').namespace('MyNamespace').data.foo);
 // getting from custom namespace, shorter version
 console.log(require('request-local').namespace('MyNamespace').foo);
 
-// by default request local stores only request and response and you can access it
+// by default request local stores only request and response and you can access it this way
 console.log(require('request-local').request.url);
 console.log(require('request-local').response.headers);
 ```
