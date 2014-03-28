@@ -153,3 +153,80 @@ describe('request-local', function() {
 	});
 
 });
+
+describe('custom request local', function() {
+	it('simple test', function(done) {
+		var rl = local.create('MyRequestLocal');
+		var run = local.run.bind(null, rl);
+		run(function() {
+			rl.data.foo = 'bar';
+			should.equal('bar', rl.data.foo);
+			done();
+		});
+	});
+
+	it('multiple locals', function(done) {
+		var rl1 = local.create('MyRequestLocal1');
+		var rl2 = local.create('MyRequestLocal2');
+		var run1 = local.run.bind(null, rl1);
+		var run2 = local.run.bind(null, rl2);
+		run1(function() {
+			rl1.data.foo1 = 'bar1';
+			should.equal('bar1', rl1.data.foo1);
+			(function() {var r = rl2.data.foo1}).should.throw(/Local storage does not seem to have been initialized/);
+
+			run2(function() {
+				should.equal('bar1', rl1.data.foo1);
+				should.ok(!rl2.data.foo2);
+				should.ok(!rl2.data.foo1);
+				should.equal('bar1', rl1.data.foo1);
+				rl2.data.foo2 = 'bar2';
+				should.ok(!rl2.data.foo1);
+				should.equal('bar1', rl1.data.foo1);
+				rl1.data.foo1 = 'bar1*';
+				should.equal('bar1*', rl1.data.foo1);
+				should.equal('bar2', rl2.data.foo2);
+				should.ok(!rl2.data.foo1);
+	
+				done();
+			});
+
+		});
+	});
+
+	it('local run method', function(done) {
+		var rl = local.create('MyRequestLocalX').run(function(err, ctx) {
+			ctx.foo = 'bar';
+			should.equal('bar', ctx.foo);
+			should.equal('bar', rl.data.foo);
+			done();
+		});
+	});	
+
+	it('Samples', function(done) {
+		var count = 0;
+		var rl = local.create('MyRequestLocalRL');
+		function end() {
+			count++;
+			if (count === 3)
+				done();
+		}
+		local.run(rl, function(err, ctx) {
+			rl.data.foo = 'bar';
+			ctx.A = 'value';
+			setTimeout(function() {
+				should.equal('bar', rl.data.foo); // should output 'bar'
+				should.equal('value', rl.data.A); // should output 'value'
+				end();
+			}, 1000);
+		});
+		setTimeout(function() {
+			(function() {console.log(rl.data.foo);}).should.throw(/Local storage does not seem to have been initialized/);
+			(function() {console.log(rl.data.A);}).should.throw(/Local storage does not seem to have been initialized/);
+			end();
+		}, 1500);
+		(function() {console.log(rl.data.foo);}).should.throw(/Local storage does not seem to have been initialized/);
+		(function() {console.log(rl.data.A);}).should.throw(/Local storage does not seem to have been initialized/);
+		end();
+	});
+});

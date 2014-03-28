@@ -52,3 +52,31 @@ console.log(require('request-local').namespace('MyNamespace').data.foo);
 // getting from custom namespace, shorter version
 console.log(require('request-local').namespace('MyNamespace').foo);
 ```
+
+## Advanced usage:
+Custom request local
+```javascript
+var local = require('request-local').create('MyRequestLocal');
+require('request-local').run(local, function(err, ctx) {
+	local.data.foo = 'bar';
+	ctx.A = 'value';
+	setTimeout(function() {
+		console.log(local.data.foo); // should output 'bar'
+		console.log(local.data.A); // should output 'value'
+	}, 1000);
+});
+console.log(local.data.foo); // should throw error
+console.log(local.data.A); // should throw error
+
+// other way to run request local context
+var localOther = require('request-local').create('MyRequestLocalOther');
+localOther.run(function(err, ctx) {
+	...
+});
+
+// bind request and response objects to request local context
+var requestLocal = require('request-local').create('MyRequestLocalOther');
+requestLocal.run(req, res, function(err, ctx) {
+	...
+});
+```

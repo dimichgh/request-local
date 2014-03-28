@@ -13,6 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-module.exports.create = function() {
-	return require('./lib/request-local').create;
+
+var local = require('./lib/request-local');
+var run = local.run.bind(null, local);
+module.exports.create = function create() {
+	// one can always create their own middleware with custom request-local
+	return function requestLocal(req, res, next) {
+		run(req, res, function(err, ctx) {
+			if (err) {
+				return next(err);
+			}
+			ctx.request = req;
+			ctx.response = res;
+			next();
+		});
+	};
 };
