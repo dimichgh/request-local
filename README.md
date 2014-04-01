@@ -40,17 +40,11 @@ require('request-local').data.foo = 'bar';
 // setting using custom namespace
 require('request-local').namespace('MyNamespace').data.foo = 'bar';
 
-// setting using custom namespace, shorter version
-require('request-local').namespace('MyNamespace').foo = 'bar';
-
 // getting from default namespace
 console.log(require('request-local').data.foo);
 
 // getting from custom namespace
 console.log(require('request-local').namespace('MyNamespace').data.foo);
-
-// getting from custom namespace, shorter version
-console.log(require('request-local').namespace('MyNamespace').foo);
 
 // by default request local stores only request and response and you can access it this way
 console.log(require('request-local').request.url);

@@ -5,6 +5,9 @@ var local = require('../');
 var create = require('../middleware').create;
 var mock = require('./mock');
 
+var TestCtx = local.namespace('TestCtx');
+var TestCtx2 = local.namespace('TestCtx2');
+
 describe('request-local, negative', function() {
 	it('storoage is not yet setup, should fail', function(done) {
 
@@ -30,12 +33,12 @@ describe('request-local', function() {
 	});
 	// setting custom sub-context
 	app.use(function(req, res, next) {
-		var ns = local.namespace('TestCtx');
-		should.equal(null, ns.A);
-		ns.data.A ='a';
+		should.equal(null, TestCtx.data.A);
+		TestCtx.data.A ='a';
 		// test other way of setting/accessing data
-		ns.B = { value: 'b'};
-		ns['C'] = 'c';
+		TestCtx.data.B = { value: 'b'};
+		TestCtx.data['C'] = 'c';
+		TestCtx2.data.D = 'd';
 		next();
 	});
 
@@ -47,10 +50,12 @@ describe('request-local', function() {
 	});
 
 	app.get('/normal-subctx', function(req, res) {
-		var ns = local.namespace('TestCtx');
-		res.send('A:' + ns.data.A + 
-			'\nB:' + JSON.stringify(ns.B) +
-			'\nC:' + ns['C']);
+		should.ok(!TestCtx2.data.A);
+		should.ok(!TestCtx.data.D);
+		should.ok(TestCtx2.data.D);
+		res.send('A:' + TestCtx.data.A + 
+			'\nB:' + JSON.stringify(TestCtx.data.B) +
+			'\nC:' + TestCtx.data['C']);
 	});
 
 	app.get('/error-subctx', function(req, res) {
@@ -59,10 +64,9 @@ describe('request-local', function() {
 			throw new Error('test error');
 		}
 		catch(err) {
-			var ns = local.namespace('TestCtx');
-			res.send('A:' + ns.A + 
-				'\nB:' + JSON.stringify(ns.B) +
-				'\nC:' + ns['C']);
+			res.send('A:' + TestCtx.data.A + 
+				'\nB:' + JSON.stringify(TestCtx.data.B) +
+				'\nC:' + TestCtx.data['C']);
 		}
 
 	});
