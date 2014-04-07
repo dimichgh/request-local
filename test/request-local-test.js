@@ -122,6 +122,56 @@ describe('request-local', function() {
 		});
 	});
 
+	it('simulation of multi-request env based on sub-local', function(done) {
+		var counter = 0;
+		function end() {
+			counter++;
+			if (counter === 3)
+				done();
+		}
+		var run = create();
+		run(mock.request('url1'), mock.response(), function() {
+
+			local.subLocal(true, function(err, ctx) {
+				var req = local.data.request;
+				should.ok(req);
+				ctx.A = 'a';
+				should.ok(local.data.parent);
+
+				setTimeout(function() {
+					var req = local.data.request;
+					req.url.should.equal('url1');
+					local.data.A.should.equal('a');
+					should.ok(local.data.parent);
+					end();
+				}, 1500);				
+			});
+
+			setTimeout(function() {
+				var req = local.data.request;
+				req.url.should.equal('url1');
+				should.ok(!local.data.A);
+				should.ok(!local.data.parent);
+				end();
+			}, 1000);
+
+			local.subLocal(mock.request('url3'), mock.response(), function(err, ctx) {
+				should.ok(!local.data.A);
+				should.ok(local.data.request);
+				should.ok(local.data.parent);
+				ctx.B = 'b';
+				setTimeout(function() {
+					should.ok(local.data.request);
+					should.ok(!local.data.A);
+					should.ok(local.data.parent);
+					local.data.B.should.equal('b');
+					end();
+				}, 500);				
+			});
+
+		});
+	});
+
 	it('simulation of multi-request env', function(done) {
 		var counter = 0;
 		function end() {
@@ -129,9 +179,10 @@ describe('request-local', function() {
 			if (counter === 3)
 				done();
 		}
-		create()(mock.request('url1'), mock.response(), function() {
+		var run = create();
+		run(mock.request('url1'), mock.response(), function() {
 
-			create()(mock.request('url2'), mock.response(), function() {
+			run(mock.request('url2'), mock.response(), function() {
 				setTimeout(function() {
 					var req = local.data.request;
 					req.url.should.equal('url2');
@@ -145,7 +196,7 @@ describe('request-local', function() {
 				end();
 			}, 1000);
 
-			create()(mock.request('url3'), mock.response(), function() {
+			run(mock.request('url3'), mock.response(), function() {
 				setTimeout(function() {
 					var req = local.data.request;
 					req.url.should.equal('url3');
