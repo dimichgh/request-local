@@ -15,11 +15,11 @@
  */
 
 var local = require('./lib/request-local');
-var run = local.run.bind(null, local);
+
 module.exports.create = function create() {
 	// one can always create their own middleware with custom request-local
 	return function requestLocal(req, res, next) {
-		run(req, res, function(err, ctx) {
+		local.run(req, res, function(err, ctx) {
 			if (err) {
 				return next(err);
 			}

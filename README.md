@@ -55,7 +55,7 @@ console.log(require('request-local').response.headers);
 Custom request local
 ```javascript
 var local = require('request-local').create('MyRequestLocal');
-require('request-local').run(local, function(err, ctx) {
+local.run(local, function(err, ctx) {
 	local.data.foo = 'bar';
 	ctx.A = 'value';
 	setTimeout(function() {
@@ -65,12 +65,6 @@ require('request-local').run(local, function(err, ctx) {
 });
 console.log(local.data.foo); // should throw error
 console.log(local.data.A); // should throw error
-
-// other way to run request local context
-var localOther = require('request-local').create('MyRequestLocalOther');
-localOther.run(function(err, ctx) {
-	...
-});
 
 // bind request and response or any other event emitting objects to request local context
 var requestLocal = require('request-local').create('MyRequestLocalOther');
@@ -83,7 +77,8 @@ requestLocal.run(req, res, new require('events').EventEmitter(), function(err, c
 ```javascript
 var local = require('request-local').create('MyRequestLocal').run(function(err, ctx) {
 	local.data.A = 'a';
-	local.subLocal(true, function(err, ctx) {
+	// run sub-context and inherit from parent
+	local.run(true, function(err, ctx) {
 		console.log(local.data.A);  // prints 'a'
 		local.data.A = 'b';
 		setTimeout(function() {

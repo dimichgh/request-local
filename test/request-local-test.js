@@ -132,7 +132,7 @@ describe('request-local', function() {
 		var run = create();
 		run(mock.request('url1'), mock.response(), function() {
 
-			local.subLocal(true, function(err, ctx) {
+			local.run(true, function(err, ctx) {
 				var req = local.data.request;
 				should.ok(req);
 				ctx.A = 'a';
@@ -155,15 +155,15 @@ describe('request-local', function() {
 				end();
 			}, 1000);
 
-			local.subLocal(mock.request('url3'), mock.response(), function(err, ctx) {
+			local.run(function(err, ctx) {
 				should.ok(!local.data.A);
-				should.ok(local.data.request);
-				should.ok(local.data.parent);
+				should.ok(!local.data.request);
+				should.ok(!local.data.parent);
 				ctx.B = 'b';
 				setTimeout(function() {
-					should.ok(local.data.request);
+					should.ok(!local.data.request);
 					should.ok(!local.data.A);
-					should.ok(local.data.parent);
+					should.ok(!local.data.parent);
 					local.data.B.should.equal('b');
 					end();
 				}, 500);				
@@ -172,7 +172,7 @@ describe('request-local', function() {
 		});
 	});
 
-	it('simulation of multi-request env', function(done) {
+	it('simulation of multi-request env based on middleware', function(done) {
 		var counter = 0;
 		function end() {
 			counter++;
@@ -212,8 +212,7 @@ describe('request-local', function() {
 describe('custom request local', function() {
 	it('simple test', function(done) {
 		var rl = local.create('MyRequestLocal');
-		var run = local.run.bind(null, rl);
-		run(function() {
+		rl.run(function() {
 			rl.data.foo = 'bar';
 			should.equal('bar', rl.data.foo);
 			done();
@@ -223,14 +222,12 @@ describe('custom request local', function() {
 	it('multiple locals', function(done) {
 		var rl1 = local.create('MyRequestLocal1');
 		var rl2 = local.create('MyRequestLocal2');
-		var run1 = local.run.bind(null, rl1);
-		var run2 = local.run.bind(null, rl2);
-		run1(function() {
+		rl1.run(function() {
 			rl1.data.foo1 = 'bar1';
 			should.equal('bar1', rl1.data.foo1);
 			(function() {var r = rl2.data.foo1}).should.throw(/Local storage does not seem to have been initialized/);
 
-			run2(function() {
+			rl2.run(function() {
 				should.equal('bar1', rl1.data.foo1);
 				should.ok(!rl2.data.foo2);
 				should.ok(!rl2.data.foo1);
@@ -266,7 +263,7 @@ describe('custom request local', function() {
 			if (count === 3)
 				done();
 		}
-		local.run(rl, function(err, ctx) {
+		rl.run(function(err, ctx) {
 			rl.data.foo = 'bar';
 			ctx.A = 'value';
 			setTimeout(function() {

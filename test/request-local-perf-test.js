@@ -78,36 +78,4 @@ describe('perf', function() {
 		done();
 	});
 
-	it('non-local', function(done) {
-		function middleware(ctx, next) {
-			ctx.C = ctx.A + ctx.B;
-			next(ctx);
-		}
-		function func1(ctx, next) {
-			ctx.C = ctx.C + ctx.A + ctx.B;
-			next(ctx);
-		}
-		function func2(ctx, next) {
-			ctx.C = ctx.C + ctx.A + ctx.B;
-			next(ctx);
-		}
-
-		var start = Date.now();
-		for(var i = 0; i < 1000000; i++) {
-			var ctx = {
-				A: 2,
-				B: 4
-			};
-			middleware(ctx, function(ctx) {
-				func1(ctx, function(ctx) {
-					func2(ctx, function(ctx) {
-
-					});
-				});
-			});		
-		}
-		console.log('total: ', Date.now() - start);
-		done();
-	});
-
 });
