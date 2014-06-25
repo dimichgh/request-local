@@ -19,7 +19,8 @@
     "storage"
   ],
   "dependencies": {
-    "continuation-local-storage": "~3.0.0"
+    "continuation-local-storage": "~3.0.0",
+    "cls-q": "^1.1.0"
   },
   "devDependencies": {
     "mocha": "~1.11.0",
