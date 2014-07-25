@@ -70,7 +70,6 @@ describe('cls test', function() {
         });
 
         deferred.promise.then(function() {
-console.log('got here');            
             // assertEqual('b', rl.data.A);
             next();
         });
