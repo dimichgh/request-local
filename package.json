@@ -1,6 +1,6 @@
 {
   "name": "request-local",
-  "version": "0.1.6-beta",
+  "version": "0.1.7",
   "description": "Request local storage for storing request context information",
   "main": "index.js",
   "directories": {
@@ -19,10 +19,13 @@
     "storage"
   ],
   "dependencies": {
-    "continuation-local-storage": "~3.0.0",
     "shimmer": "~1.0.0"
   },
+  "peerDependencies": {
+    "continuation-local-storage": "~3.0.0"
+  },
   "devDependencies": {
+    "continuation-local-storage": "~3.0.0",
     "mocha": "~1.11.0",
     "jshint": "~2.1.4",
     "express": "~3.1.1",
