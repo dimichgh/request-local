@@ -1,3 +1,4 @@
+'use strict';
 var assert = require('assert');
 
 describe('readme sample', function() {
@@ -6,8 +7,9 @@ describe('readme sample', function() {
 		this.timeout(4000);
 		var count = 0;
 		function end() {
-			if (++count === 2)
+			if (++count === 2) {
 				done();
+			}
 		}
 		function assertEqual(v1, v2) {
 			if (v1 !== v2) {

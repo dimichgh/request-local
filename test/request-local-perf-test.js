@@ -1,3 +1,5 @@
+'use strict';
+
 var request = require('request');
 var should = require('should');
 var local = require('../');
@@ -5,44 +7,44 @@ var create = require('../middleware').create;
 var mock = require('./mock');
 var _ = require('underscore');
 
+var ns1 = local.create('custom1');
+var ns2 = local.create('custom2');
+
 describe('perf', function() {
 
 	it('local', function(done) {
-		var clocal;
 
 		function middleware(next) {
-			clocal.data.C = clocal.data.A + clocal.data.B;
+			ns1.data.C = ns1.data.A + ns1.data.B;
 			next();
 		}
 		function func1(next) {
-			clocal.data.C = clocal.data.C + clocal.data.A + clocal.data.B;
+			ns1.data.C = ns1.data.C + ns1.data.A + ns1.data.B;
 			next();
 		}
 		function func2(next) {
-			clocal.data.C = clocal.data.C + clocal.data.A + clocal.data.B;
+			ns1.data.C = ns1.data.C + ns1.data.A + ns1.data.B;
 			next();
 		}
+		function test() {
+			func1(function () {
+				func2(function () {
 
-		clocal = local.create('custom').run(function(err, ctx) {
-			ctx.A = 2;
-			ctx.B = 4;
+				});
+			});
+		}
 
-			var start = Date.now();
-			for(var i = 0; i < 1000000; i++) {
-				var ctx = {
-					A: 2,
-					B: 4
-				};
-				middleware(function(ctx) {
-					func1(function(ctx) {
-						func2(function(ctx) {
-
-						});
-					});
-				});		
-			}
-			console.log('total: ', Date.now() - start);
-			done();
+		ns1.run(function (err1, ctx1) {
+			ns2.run(function (err2, ctx2) {
+				ns1.data.A = 2;
+				ns1.data.B = 4;
+				var start = Date.now();
+				for(var i = 0; i < 1000000; i++) {
+					middleware(test);
+				}
+				console.log('cls total: ', Date.now() - start);
+				done();
+			});
 		});
 	});
 
@@ -60,21 +62,23 @@ describe('perf', function() {
 			next(ctx);
 		}
 
+		
+		var ctx = {
+			A: 2,
+			B: 4
+		};
+
 		var start = Date.now();
 		for(var i = 0; i < 1000000; i++) {
-			var ctx = {
-				A: 2,
-				B: 4
-			};
-			middleware(ctx, function(ctx) {
+			middleware(ctx, function test(ctx) {
 				func1(ctx, function(ctx) {
 					func2(ctx, function(ctx) {
 
 					});
 				});
-			});		
+			});
 		}
-		console.log('total: ', Date.now() - start);
+		console.log('non-cls total: ', Date.now() - start);
 		done();
 	});
 

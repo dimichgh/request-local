@@ -1,3 +1,5 @@
+'use strict';
+
 var EventEmitter = require('events').EventEmitter;
 
 module.exports = {
@@ -7,10 +9,10 @@ module.exports = {
         req.url = url;
         req.setHeader = function(name, value) {
             this.headers[name] = value;
-        }
+        };
         return req;
     },
     response: function() {
-    	return new EventEmitter();
+        return new EventEmitter();
     }
 };

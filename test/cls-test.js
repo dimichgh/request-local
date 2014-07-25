@@ -1,3 +1,5 @@
+'use strict';
+
 var assert = require('assert');
 
 var rl = require('../').create('MyRequestLocal');
@@ -56,7 +58,7 @@ describe('cls test', function() {
                                         });
                                         assertEqual('b', rl.data.A);
                                         deferred.resolve();
-            next();
+                                        next();
                                     });
                                 });
 
