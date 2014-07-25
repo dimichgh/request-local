@@ -51,6 +51,54 @@ console.log(require('request-local').request.url);
 console.log(require('request-local').response.headers);
 ```
 
+## Special cases
+There is still some module or API like q, http, request. They may lose cls context in case of error or other. 
+In this case if you have callback or emitter that causes this, you can use the following API to bind context: 
+
+* bindAll - binds callback function to all available contexts.
+* bindEmitterAll - binds emitter to all available contexts.
+
+* Note: the module keeps track of all namespaces created and will bind them all *
+
+The use of core http module:
+```javascript
+var requestLocal = require('request-local');
+var ns = requestLocal.create('my-namespace');
+ns.run(function (err, ctx) {
+	ctx.myVar = 'val';
+	var req = require('http').request('http://you/url', function (err, res) {
+		console.log('the value is still there: ', ns.data.myVar);
+	});
+	requestLocal.bindEmitterAll(req);
+
+	req.setTimeout(function () {
+		console.log('the value is still there: ', ns.data.myVar);
+		req.abort();	
+	});
+	req.on('error', function (err) {
+		console.log('the value is still there: ', ns.data.myVar);
+	});
+	req.write('data');
+	res.end();
+});
+```
+
+Example of callback binding
+```javascript
+var requestLocal = require('request-local');
+var ns = requestLocal.create('my-namespace');
+ns.run(function (err, ctx) {
+	ctx.myVar = 'val';
+	require('request').get({
+		uri: 'http://you/url',
+		timeout: 900
+	}, requestLocal.bindAll(function (err, res, body) {
+		console.log('the value is still there: ', ns.data.myVar);
+	}));
+	requestLocal.bindEmitterAll(req);
+});
+```
+
 ## Advanced usage:
 Custom request local
 ```javascript

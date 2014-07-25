@@ -1,6 +1,6 @@
 {
   "name": "request-local",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Request local storage for storing request context information",
   "main": "index.js",
   "directories": {
@@ -19,7 +19,10 @@
     "storage"
   ],
   "dependencies": {
-    "cls-q": "^1.1.0"
+    "shimmer": "~1.0.0"
+  },
+  "peerDependencies": {
+    "continuation-local-storage": "~3.0.0"
   },
   "devDependencies": {
     "continuation-local-storage": "~3.0.0",
@@ -31,9 +34,6 @@
     "underscore": "~1.6.0",
     "q": "*"
   }, 
-  "peerDependencies": {
-    "continuation-local-storage": "~3.0.0"
-  },
   "author": "Dmytro Semenov <dsemenov@ebay.com>",
   "license": "Apache License v2.0"
 }
