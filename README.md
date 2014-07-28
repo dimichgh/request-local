@@ -95,7 +95,6 @@ ns.run(function (err, ctx) {
 	}, requestLocal.bindAll(function (err, res, body) {
 		console.log('the value is still there: ', ns.data.myVar);
 	}));
-	requestLocal.bindEmitterAll(req);
 });
 ```
 
