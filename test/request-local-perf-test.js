@@ -62,7 +62,7 @@ describe('perf', function() {
 			next(ctx);
 		}
 
-		
+
 		var ctx = {
 			A: 2,
 			B: 4
