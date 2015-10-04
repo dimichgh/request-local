@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node_modules/.bin/jshint --config .jshintrc && node_modules/.bin/mocha test/*.js --reporter spec"
+    "test": "node_modules/.bin/jshint --config .jshintrc && node_modules/.bin/mocha test/*.js --reporter spec --timeout 10s"
   },
   "repository": {
     "type": "git",

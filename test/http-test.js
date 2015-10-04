@@ -84,9 +84,10 @@ describe('http use-cases', function () {
                 req.abort();
             });
 
-            req.once('error', function(e) {
+            req.on('error', function(e) {
                 assert.equal(0xabad1dea, namespace.get('test.CONNREFUSED'));
-                done();
+                done && done();
+                done = undefined; // to avoid double error
             });
 
             // write data to request body
