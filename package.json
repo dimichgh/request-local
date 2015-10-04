@@ -1,13 +1,13 @@
 {
   "name": "request-local",
-  "version": "0.2.0-beta",
+  "version": "0.1.10",
   "description": "Request local storage for storing request context information",
   "main": "index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha test/ --ignore-leaks"
+    "test": "node_modules/.bin/jshint --config .jshintrc && node_modules/.bin/mocha test/*.js --reporter spec --timeout 10s"
   },
   "repository": {
     "type": "git",
@@ -25,15 +25,18 @@
     "continuation-local-storage": "^3.0.0"
   },
   "devDependencies": {
+    "async": "^1.4.2",
+    "bluebird": "*",
     "continuation-local-storage": "^3.0.0",
-    "mocha": "~1.11.0",
-    "jshint": "~2.1.4",
     "express": "~3.1.1",
+    "jshint": "~2.1.4",
+    "mocha": "~1.11.0",
+    "q": "*",
+    "raptor-async": "*",
     "request": "~2.34.0",
     "should": "~3.1.3",
-    "underscore": "~1.6.0",
-    "q": "*"
-  }, 
+    "underscore": "~1.6.0"
+  },
   "author": "Dmytro Semenov <dsemenov@ebay.com>",
   "license": "Apache License v2.0"
 }

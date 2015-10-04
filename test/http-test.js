@@ -32,7 +32,7 @@ describe('http use-cases', function () {
 
             // write data to request body
             req.write('data\n');
-            req.end();            
+            req.end();
         }
 
         var counter = 0;
@@ -61,9 +61,9 @@ describe('http use-cases', function () {
                     });
                 });
 
-            });      
+            });
         });
-  
+
     });
 
     it('CONNREFUSED', function (done) {
@@ -86,13 +86,14 @@ describe('http use-cases', function () {
 
             req.on('error', function(e) {
                 assert.equal(0xabad1dea, namespace.get('test.CONNREFUSED'));
-                done();
+                done && done();
+                done = undefined; // to avoid double error
             });
 
             // write data to request body
             req.write('data\n');
             req.end();
-        });        
+        });
     });
 
 });
