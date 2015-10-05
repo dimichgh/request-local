@@ -45,4 +45,49 @@ describe(__filename, function () {
             done();
         });
     });
+
+    it('should not conflict two requests accessing the same data via promise and get rejected', function (done) {
+        var cache;
+        function getCommonData(cb) {
+            if (cache) {
+                return cache.done(cb);
+            }
+
+            cache = new DataHolder();
+            cache.done(cb);
+            setTimeout(function () {
+                cache.reject(new Error('Test error'));
+            }, 100);
+        }
+
+        function request(name, cb) {
+            Async.series([
+                function setup(next) {
+                    RequestLocal.run(function (err, ctx) {
+                        ctx.name = name;
+                        next();
+                    });
+                },
+                function accessData(next) {
+                    getCommonData(function handleData(err) {
+                        Assert.ok(err);
+                        Assert.equal('Test error', err.message);
+                        next();
+                    });
+                },
+            ], function greet(err) {
+                cb(null, 'hello ' + RequestLocal.data.name);
+            });
+        }
+
+        Async.parallel({
+            John: request.bind(null, 'John'),
+            Bob: request.bind(null, 'Bob')
+        }, function validate(err, greets) {
+            Assert.ok(!err, err && err.stack);
+            Assert.equal('hello John', greets.John);
+            Assert.equal('hello Bob', greets.Bob);
+            done();
+        });
+    });
 });
