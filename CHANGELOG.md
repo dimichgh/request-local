@@ -1,4 +1,7 @@
 # CHANGELOG
+## v0.1.12
+* Fixed: should not bind the same callback twice.
+
 ## v0.1.11
 * Fixed: patched Q promis fails with "has no method 'runAfter'".
 
