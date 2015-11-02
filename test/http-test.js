@@ -3,7 +3,6 @@
 var assert = require('assert');
 var http = require('http');
 var requestLocal = require('..');
-var createNamespace = require('continuation-local-storage').createNamespace;
 
 describe('http use-cases', function () {
 

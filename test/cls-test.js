@@ -1,5 +1,4 @@
 'use strict';
-require('continuation-local-storage');
 var assert = require('assert');
 
 var rl = require('../');
