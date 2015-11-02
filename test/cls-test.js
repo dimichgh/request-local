@@ -1,8 +1,7 @@
 'use strict';
-require('continuation-local-storage');
 var assert = require('assert');
 
-var rl = require('../').create('MyRequestLocal');
+var rl = require('../');
 var q = require('q');
 
 describe('cls test', function() {
@@ -31,14 +30,14 @@ describe('cls test', function() {
             rl.data.A = 'b';
             assertEqual('b', rl.data.A);
             deferred.promise.then(function () {
-                assertEqual('b', rl.data.A);        
-                next(); 
+                assertEqual('b', rl.data.A);
+                next();
             });
             q.nextTick(function() {
 
                 deferred.promise.then(function () {
-                    assertEqual('b', rl.data.A);        
-                    next(); 
+                    assertEqual('b', rl.data.A);
+                    next();
                 });
                 assertEqual('b', rl.data.A);
                 process.nextTick(function() {
@@ -49,7 +48,7 @@ describe('cls test', function() {
                             process.nextTick(function() {
                                 deferred.promise.then(function () {
                                     assertEqual('b', rl.data.A);
-                                    next();     
+                                    next();
                                 });
 
                                 assertEqual('b', rl.data.A);
@@ -57,7 +56,7 @@ describe('cls test', function() {
                                     process.nextTick(function() {
                                         deferred.promise.then(function () {
                                             assertEqual('b', rl.data.A);
-                                            next();     
+                                            next();
                                         });
                                         assertEqual('b', rl.data.A);
                                         deferred.resolve();

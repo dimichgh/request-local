@@ -1,4 +1,8 @@
 # CHANGELOG
+## v1.0.0
+* Removed namespace support
+* Switched to process.domain to maintain context
+
 ## v0.1.13
 * Fixed: should not double patch when multiple versions are installed
 

@@ -6,7 +6,7 @@ var Assert = require('assert');
 var Async = require('async');
 var Q = require('q');
 
-describe(__filename, function () {
+describe.skip(__filename, function () {
     it('should not conflict two requests accessing the same data via promise', function (done) {
         var cache;
         function getCommonData() {
@@ -46,8 +46,13 @@ describe(__filename, function () {
             Bob: request.bind(null, 'Bob')
         }, function validate(err, greets) {
             Assert.ok(!err, err && err.stack);
-            Assert.equal('hello John', greets.John);
-            Assert.equal('hello Bob', greets.Bob);
+            try {
+                Assert.equal('hello John', greets.John);
+                Assert.equal('hello Bob', greets.Bob);
+            }
+            catch (e) {
+                return done(e);
+            }
             done();
         });
     });
@@ -93,8 +98,13 @@ describe(__filename, function () {
             Bob: request.bind(null, 'Bob')
         }, function validate(err, greets) {
             Assert.ok(!err, err && err.stack);
-            Assert.equal('hello John', greets.John);
-            Assert.equal('hello Bob', greets.Bob);
+            try {
+                Assert.equal('hello John', greets.John);
+                Assert.equal('hello Bob', greets.Bob);
+            }
+            catch (e) {
+                return done(e);
+            }
             done();
         });
     });

@@ -10,12 +10,12 @@ describe(__filename, function () {
     it('should not conflict two requests accessing the same data via promise', function (done) {
         var cache;
         function getCommonData(cb) {
+            cb = RequestLocal.bindAll(cb);
             if (cache) {
                 return cache.once('data', cb);
             }
 
             cache = new EventEmitter();
-            RequestLocal.bindEmitterAll(cache);
             cache.once('data', cb);
             setTimeout(function () {
                 cache.emit('data', 'some data');

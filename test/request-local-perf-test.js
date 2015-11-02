@@ -7,23 +7,20 @@ var create = require('../middleware').create;
 var mock = require('./mock');
 var _ = require('underscore');
 
-var ns1 = local.create('custom1');
-var ns2 = local.create('custom2');
-
 describe('perf', function() {
 
 	it('local', function(done) {
 
 		function middleware(next) {
-			ns1.data.C = ns1.data.A + ns1.data.B;
+			local.data.C = local.data.A + local.data.B;
 			next();
 		}
 		function func1(next) {
-			ns1.data.C = ns1.data.C + ns1.data.A + ns1.data.B;
+			local.data.C = local.data.C + local.data.A + local.data.B;
 			next();
 		}
 		function func2(next) {
-			ns1.data.C = ns1.data.C + ns1.data.A + ns1.data.B;
+			local.data.C = local.data.C + local.data.A + local.data.B;
 			next();
 		}
 		function test() {
@@ -34,10 +31,10 @@ describe('perf', function() {
 			});
 		}
 
-		ns1.run(function (err1, ctx1) {
-			ns2.run(function (err2, ctx2) {
-				ns1.data.A = 2;
-				ns1.data.B = 4;
+		local.run(function (err1, ctx1) {
+			local.run(function (err2, ctx2) {
+				local.data.A = 2;
+				local.data.B = 4;
 				var start = Date.now();
 				for(var i = 0; i < 1000000; i++) {
 					middleware(test);
