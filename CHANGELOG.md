@@ -1,4 +1,7 @@
 # CHANGELOG
+## v0.1.14
+* Disabled patching of bluebird and Q promises, please switch to 1.0.0 version in case you need more secure context.
+
 ## v0.1.13
 * Fixed: should not double patch when multiple versions are installed
 
