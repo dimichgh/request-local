@@ -5,9 +5,6 @@ var http = require('http');
 var requestLocal = require('..');
 var createNamespace = require('continuation-local-storage').createNamespace;
 
-var namespace = createNamespace('http');
-var namespace2 = createNamespace('http2');
-
 describe('http use-cases', function () {
 
     it('timeout', function (done) {
@@ -36,25 +33,25 @@ describe('http use-cases', function () {
         }
 
         var counter = 0;
-        namespace2.run(function () {
-            namespace2.set('ns2.val', 'val2');
-            assert.equal('val2', namespace2.get('ns2.val'));
+        requestLocal.run(function () {
+            requestLocal.data['ns2.val'] = 'val2';
+            assert.equal('val2', requestLocal.data['ns2.val']);
 
-            namespace.run(function () {
-                namespace.set('test.timeout', 0xabad1dea);
-                assert.equal('val2', namespace2.get('ns2.val'));
+            requestLocal.run(true, function () {
+                requestLocal.data['test.timeout'] = 0xabad1dea;
+                assert.equal('val2', requestLocal.data['ns2.val']);
 
-                assert.equal(0xabad1dea, namespace.get('test.timeout'));
-                assert.equal('val2', namespace2.get('ns2.val'));
+                assert.equal(0xabad1dea, requestLocal.data['test.timeout']);
+                assert.equal('val2', requestLocal.data['ns2.val']);
                 makeRequest('http://128.0.0.1:8080', function (err) {
                     assert.equal('TIMEDOUT', err);
-                    assert.equal('val2', namespace2.get('ns2.val'));
-                    assert.equal(0xabad1dea, namespace.get('test.timeout'));
+                    assert.equal('val2', requestLocal.data['ns2.val']);
+                    assert.equal(0xabad1dea, requestLocal.data['test.timeout']);
                     // retry
                     process.nextTick(function () {
                         makeRequest('http://128.0.0.1:8080', function (err) {
-                            assert.equal(0xabad1dea, namespace.get('test.timeout'));
-                            assert.equal('val2', namespace2.get('ns2.val'));
+                            assert.equal(0xabad1dea, requestLocal.data['test.timeout']);
+                            assert.equal('val2', requestLocal.data['ns2.val']);
                             assert.equal('TIMEDOUT', err);
                             done();
                         });
@@ -67,15 +64,16 @@ describe('http use-cases', function () {
     });
 
     it('CONNREFUSED', function (done) {
-        namespace.run(function () {
-            namespace.set('test.CONNREFUSED', 0xabad1dea);
+        requestLocal.run(function () {
+            var expected = 'some data';
+            requestLocal.data['test.CONNREFUSED'] = expected;
 
-            assert.equal(0xabad1dea, namespace.get('test.CONNREFUSED'));
+            assert.equal(expected, requestLocal.data['test.CONNREFUSED']);
             var req = http.get('http://127.0.0.1:8080', function (res) { // REFUSED
                 res.on('data', function (chunk) {
                 });
                 res.on('end', function () {
-                    assert.equal(0xabad1dea, namespace.get('test.CONNREFUSED'));
+                    assert.equal(expected, requestLocal.data['test.CONNREFUSED']);
                 });
             });
             requestLocal.bindEmitterAll(req);
@@ -85,7 +83,7 @@ describe('http use-cases', function () {
             });
 
             req.on('error', function(e) {
-                assert.equal(0xabad1dea, namespace.get('test.CONNREFUSED'));
+                assert.equal(expected, requestLocal.data['test.CONNREFUSED']);
                 done && done();
                 done = undefined; // to avoid double error
             });

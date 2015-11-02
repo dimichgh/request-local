@@ -11,7 +11,7 @@ describe(__filename, function () {
         var cache;
         function getCommonData() {
             if (cache) {
-                // return cache;
+                return cache;
             }
 
             var deferred = Promises.defer();
@@ -32,7 +32,9 @@ describe(__filename, function () {
                     });
                 },
                 function data(next) {
-                    getCommonData().then(function (data) {
+                    getCommonData().then(RequestLocal.bindAll(function firstPath(data) {
+                        return data;
+                    })).then(function secondPath() {
                         next();
                     });
                 },
@@ -56,7 +58,7 @@ describe(__filename, function () {
         var cache;
         function getCommonData() {
             if (cache) {
-                // return cache;
+                return cache;
             }
 
             var deferred = Promises.defer();

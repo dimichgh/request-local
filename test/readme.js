@@ -16,7 +16,7 @@ describe('readme sample', function() {
 				done(new Error(v1 + ' is not equal ' + v2));
 			}
 		}
-		var local = require('../').create('MyRequestLocal').run(function(err, ctx) {
+		var local = require('../').run(function(err, ctx) {
 			local.data.A = 'a';
 			local.run(true, function(err, ctx) {
 				assertEqual('a', local.data.A);
@@ -29,7 +29,7 @@ describe('readme sample', function() {
 			setTimeout(function() {
 				assertEqual('a', local.data.A);
 				end();
-			}, 1000);	
+			}, 1000);
 		});
 
 	});
