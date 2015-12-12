@@ -32,9 +32,9 @@ describe(__filename, function () {
                     });
                 },
                 function data(next) {
-                    getCommonData().then(RequestLocal.bindAll(function firstPath(data) {
+                    getCommonData().then(function firstPath(data) {
                         return data;
-                    })).then(function secondPath() {
+                    }).then(function secondPath() {
                         next();
                     });
                 },
