@@ -3,7 +3,7 @@
 var Q = require('q');
 var Assert = require('assert');
 
-describe.skip("security issue when accessing common data via promise", function () {
+describe.skip("Q security issue when accessing common data via promise", function () {
     var Domain = require("domain");
 
     var cache;
