@@ -14,9 +14,9 @@
     "url": "https://github.com/dimichgh/request-local.git"
   },
   "keywords": [
-    "cls",
-    "local",
-    "storage"
+    "domain",
+    "request",
+    "local"
   ],
   "dependencies": {
     "shimmer": "~1.0.0"

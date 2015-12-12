@@ -1,4 +1,7 @@
 # CHANGELOG
+## v1.0.1
+* Wrapped domain.create method to preserve request context
+
 ## v1.0.0
 * Removed namespace support
 * Switched to process.domain to maintain context
