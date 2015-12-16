@@ -1,4 +1,7 @@
 # CHANGELOG
+## v1.0.2
+* Added child request local to parent if any exists to allow propagation of errors to the parent domain
+
 ## v1.0.1
 * Wrapped domain.create method to preserve request context
 

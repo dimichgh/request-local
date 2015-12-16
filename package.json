@@ -26,7 +26,7 @@
     "bluebird": "*",
     "express": "~3.1.1",
     "jshint": "~2.1.4",
-    "mocha": "~1.11.0",
+    "mocha": "^2.3.4",
     "q": "*",
     "raptor-async": "*",
     "request": "~2.34.0",
