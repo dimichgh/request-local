@@ -137,7 +137,6 @@ describe(__filename, function () {
                 Assert.equal('Test error', err.message);
                 Assert.equal(undefined, RequestLocal.data.foo);
                 Assert.equal(undefined, RequestLocal.data.qaz);
-
                 process.domain.exit();
                 next();
             };
@@ -148,4 +147,65 @@ describe(__filename, function () {
         });
     });
 
+    describe('should propagate uncaught exception', function () {
+        var errorHandler;
+        var uncaughtListeners;
+
+        before(function () {
+            process.domain && process.domain.exit();
+            // remove mocha from the uncaught loop
+            uncaughtListeners = process.listeners('uncaughtException');
+            process.removeAllListeners('uncaughtException');
+            // setup our own handler
+            process.on('uncaughtException', function (err) {
+                errorHandler(err);
+            });
+        });
+
+        after(function () {
+            // restore listeners
+            (uncaughtListeners || []).forEach(function (listener) {
+                process.on('uncaughtException', listener);
+            });
+        });
+
+        it('should create request context', function (next) {
+            RequestLocal.run(function () {
+                Assert.ok(process.domain._rlCtx);
+                next();
+            });
+        });
+
+        it('... should set context value ...', function (next) {
+            RequestLocal.data.foo = 'bar';
+            RequestLocal.data.qaz = 'qwe';
+            Assert.equal('bar', process.domain._rlCtx.foo);
+            Assert.equal('bar', RequestLocal.data.foo);
+            Assert.equal('qwe', process.domain._rlCtx.qaz);
+            Assert.equal('qwe', RequestLocal.data.qaz);
+            next();
+        });
+
+        it('... should create another request context', function (next) {
+            RequestLocal.run(function () {
+                Assert.ok(process.domain._rlCtx);
+                next();
+            });
+        });
+
+        it('... should throw error', function (next) {
+            errorHandler = function (err) {
+                Assert.equal('Test error', err.message);
+                Assert.equal(undefined, RequestLocal.data.foo);
+                Assert.equal(undefined, RequestLocal.data.qaz);
+                process.domain.exit();
+                next();
+            };
+
+            setTimeout(function () {
+                throw new Error('Test error');
+            }, 100);
+        });
+
+    });
 });
