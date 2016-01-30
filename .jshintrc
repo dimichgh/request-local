@@ -28,8 +28,8 @@
     "dojo": false,
 
     // Custom predefined globals.
-    "predef": ["Backbone", "__devenv", "resourceRoot", "beforeEach", "afterEach", "describe", "before", "after", "it"],
-    
+    "predef": ["Backbone", "__devenv", "resourceRoot", "beforeEach", "afterEach", "describe", "before", "after", "it", "Promise"],
+
     // Development
 
     // Whether debugger statements should be allowed.
@@ -142,4 +142,3 @@
     // Specify indentation.
     "indent": 4
 }
-
