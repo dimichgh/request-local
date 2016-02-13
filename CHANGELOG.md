@@ -2,6 +2,7 @@
 
 ## next
 * Added patching of ES6 Promise to avoid context switch when accessing shared data source
+* Added tests for asyncawait based on node-fibers
 
 ## v1.0.2
 * Added child request local to parent if any exists to allow propagation of errors to the parent domain
