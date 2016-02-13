@@ -1,6 +1,7 @@
 'use strict';
 
 var RequestLocal = require('..');
+var Promises = require('bluebird');
 
 var Assert = require('assert');
 var Async = require('async');
@@ -16,11 +17,13 @@ describe(__filename, function () {
                 return cache;
             }
 
-            return cache = new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                    resolve('data');
-                }, 100);
-            });
+            var deferred = Promises.defer();
+
+            setTimeout(function () {
+                deferred.resolve('data');
+            }, 100);
+
+            return cache = deferred.promise;
         }
 
         function request(name, cb) {
@@ -61,18 +64,20 @@ describe(__filename, function () {
         });
     });
 
-    it.only('should not conflict two requests accessing the same data via promise and rejected in then', function (done) {
+    it('should not conflict two requests accessing the same data via promise and rejected in then', function (done) {
         var cache;
         function getCommonData() {
             if (cache) {
                 return cache;
             }
 
-            return cache = new Promise(function (resolve, reject) {
-                setTimeout(function () {
-                    reject(new Error('Test error'));
-                }, 100);
-            });
+            var deferred = Promises.defer();
+
+            setTimeout(function () {
+                deferred.reject(new Error('Test error'));
+            }, 100);
+
+            return cache = deferred.promise;
         }
 
         function request(name, cb) {
