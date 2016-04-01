@@ -125,7 +125,7 @@ if (global.Promise) {
                             Assert.ok(err);
                             Assert.equal('Test error', err.message);
                             next();
-                        });
+                        }).catch(next);
                     },
                 ], function greet() {
                     cb(null, 'hello ' + RequestLocal.data.name);
@@ -175,6 +175,9 @@ if (global.Promise) {
                             Assert.ok(err);
                             Assert.equal('Test error', err.message);
                             next();
+                        }).then(function (data) {
+                            // just testing if function exists
+                            return data;
                         });
                     },
                 ], function greet() {

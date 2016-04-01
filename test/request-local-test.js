@@ -187,6 +187,12 @@ describe('request-local', function() {
 });
 
 describe('custom request local', function() {
+    before(function () {
+        while(process.domain) {
+            process.exit();
+        }
+    });
+
     it('simple test', function(done) {
         local.run(function() {
             local.data.foo = 'bar';
@@ -196,7 +202,6 @@ describe('custom request local', function() {
     });
 
     it('multiple locals', function(done) {
-        process.domain.exit();
         (function() {var r = local.data.foo1;}).should.throw(/Local storage does not seem to have been initialized/);
         local.run(function() {
             local.data.foo1 = 'bar1';
