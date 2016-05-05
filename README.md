@@ -1,5 +1,8 @@
 request-local
 =====
+[![Build Status](https://travis-ci.org/dimichgh/request-local.svg?branch=master)](https://travis-ci.org/dimichgh/request-local) [![NPM](https://img.shields.io/npm/v/request-local.svg)](https://www.npmjs.com/package/request-local)
+[![Downloads](https://img.shields.io/npm/dm/request-local.svg)](http://npm-stat.com/charts.html?package=request-local)
+
 The module provides middleware and API to store request context data.
 
 It should not be used by any module directly, i.e. should not be defined as a direct dependency by any module, but as a peerDependencies. This is to prevent conflicts that may arise from using multiple versions of this module.
