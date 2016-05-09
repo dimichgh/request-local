@@ -1,6 +1,8 @@
 # CHANGELOG
 
 ## next
+
+## v1.0.3
 * Added patching of ES6 Promise to avoid context switch when accessing shared data source
 * Added tests for asyncawait based on node-fibers
 
