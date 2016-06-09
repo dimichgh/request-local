@@ -2,6 +2,7 @@ request-local
 =====
 [![Build Status](https://travis-ci.org/dimichgh/request-local.svg?branch=master)](https://travis-ci.org/dimichgh/request-local) [![NPM](https://img.shields.io/npm/v/request-local.svg)](https://www.npmjs.com/package/request-local)
 [![Downloads](https://img.shields.io/npm/dm/request-local.svg)](http://npm-stat.com/charts.html?package=request-local)
+[![Known Vulnerabilities](https://snyk.io/test/github/dimichgh/request-local/badge.svg)](https://snyk.io/test/github/dimichgh/request-local)
 
 The module provides middleware and API to store request context data.
 
