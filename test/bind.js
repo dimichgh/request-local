@@ -4,7 +4,7 @@ var Assert = require('assert');
 var Domain = require('domain');
 var RequestLocal = require('..');
 
-describe.only(__filename, function () {
+describe(__filename, function () {
     before(function (next) {
         var domain = Domain.create();
         domain.run(next);
