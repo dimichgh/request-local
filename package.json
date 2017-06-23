@@ -7,7 +7,8 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node_modules/.bin/jshint --config .jshintrc && node_modules/.bin/mocha test/*.js --reporter spec --timeout 20s"
+    "test": "node_modules/.bin/jshint --config .jshintrc && node_modules/.bin/mocha test/*.js --reporter spec --timeout 20s",
+    "test-coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --  --timeout 20s -R spec"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "asyncawait": "^1.0.3",
     "bluebird": "*",
     "express": "~3.1.1",
+    "istanbul": "^0.4.5",
     "jshint": "~2.1.4",
     "mocha": "^2.3.4",
     "q": "*",

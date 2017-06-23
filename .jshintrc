@@ -3,7 +3,7 @@
     "passfail": false,
     // Maximum errors before stopping.
     "maxerr": 100,
-
+    "esversion": 6,
 
     // Predefined globals
 
