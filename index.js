@@ -1,3 +1,5 @@
+'use strict';
+
 /*
  * Copyright 2011 eBay Software Foundation
  *
