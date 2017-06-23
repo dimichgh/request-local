@@ -1,6 +1,6 @@
 {
   "name": "request-local",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Request local storage for storing request context information",
   "main": "index.js",
   "directories": {
