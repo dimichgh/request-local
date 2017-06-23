@@ -1,5 +1,6 @@
 request-local
-=====
+
+![codecov](https://codecov.io/gh/dimichgh/request-local/branch/master/graph/badge.svg)](https://codecov.io/gh/dimichgh/request-local)
 [![Build Status](https://travis-ci.org/dimichgh/request-local.svg?branch=master)](https://travis-ci.org/dimichgh/request-local) [![NPM](https://img.shields.io/npm/v/request-local.svg)](https://www.npmjs.com/package/request-local)
 [![Downloads](https://img.shields.io/npm/dm/request-local.svg)](http://npm-stat.com/charts.html?package=request-local)
 [![Known Vulnerabilities](https://snyk.io/test/github/dimichgh/request-local/badge.svg)](https://snyk.io/test/github/dimichgh/request-local)

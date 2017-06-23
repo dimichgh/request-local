@@ -1,5 +1,4 @@
 node_modules
-# Eclipse configuration #
 .settings
 .classpath
 .buildpath
@@ -8,3 +7,4 @@ target
 .target
 pids
 .idea
+coverage
