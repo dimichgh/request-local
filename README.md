@@ -16,6 +16,8 @@ Important: to make sure everything is patched before any other module is loaded,
 
 ## Install
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dimichgh/request-local.svg)](https://greenkeeper.io/)
+
 ```
   npm install request-local --save
 ```
