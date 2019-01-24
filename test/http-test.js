@@ -5,6 +5,14 @@ var http = require('http');
 var requestLocal = require('..');
 
 describe('http use-cases', function () {
+    let port;
+    before(next => {
+        const session = http.createServer((req, res) => {
+        }).listen(0, () => {
+            port = session.address().port;
+            next();
+        });
+    });
 
     it('timeout', function (done) {
         function makeRequest(url, cb) {
@@ -17,18 +25,14 @@ describe('http use-cases', function () {
             });
             requestLocal.bindEmitterAll(req);
 
-            req.setTimeout(500, function() {
-                req.abort();
-                // now retry
+            req.on('error', function(e) {
                 cb('TIMEDOUT');
             });
 
-            req.on('error', function(e) {
-            });
-
             // write data to request body
-            req.write('data\n');
-            req.end();
+            setTimeout(function() {
+                req.abort();
+            }, 500);
         }
 
         var counter = 0;
@@ -42,13 +46,13 @@ describe('http use-cases', function () {
 
                 assert.equal(0xabad1dea, requestLocal.data['test.timeout']);
                 assert.equal('val2', requestLocal.data['ns2.val']);
-                makeRequest('http://128.0.0.1:8080', function (err) {
+                makeRequest(`http://128.0.0.1:${port}`, function (err) {
                     assert.equal('TIMEDOUT', err);
                     assert.equal('val2', requestLocal.data['ns2.val']);
                     assert.equal(0xabad1dea, requestLocal.data['test.timeout']);
                     // retry
                     process.nextTick(function () {
-                        makeRequest('http://128.0.0.1:8080', function (err) {
+                        makeRequest(`http://128.0.0.1:${port}`, function (err) {
                             assert.equal(0xabad1dea, requestLocal.data['test.timeout']);
                             assert.equal('val2', requestLocal.data['ns2.val']);
                             assert.equal('TIMEDOUT', err);
@@ -68,7 +72,7 @@ describe('http use-cases', function () {
             requestLocal.data['test.CONNREFUSED'] = expected;
 
             assert.equal(expected, requestLocal.data['test.CONNREFUSED']);
-            var req = http.get('http://127.0.0.1:8080', function (res) { // REFUSED
+            var req = http.get('http://127.0.0.1:8088', function (res) { // REFUSED
                 res.on('data', function (chunk) {
                 });
                 res.on('end', function () {
